@@ -1,7 +1,3 @@
-Here’s a clean and professional `README.md` for your Spring Boot project named `spring-boot-starter`, which performs CRUD operations on a `User` collection using MongoDB.
-
----
-
 ## 📘 `README.md` — `spring-boot-starter`
 
 ```markdown
