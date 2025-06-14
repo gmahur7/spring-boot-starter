@@ -71,19 +71,19 @@ spring-boot-starter/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/spring-boot-starter.git
+git clone https://github.com/gmahur7/spring-boot-starter.git
 cd spring-boot-starter
 ````
 
 ### 2. Set up MongoDB
 
 * Ensure MongoDB is running locally on `mongodb://localhost:27017`
-* Default database used: `userdb`
+* Default database used: `spring`
 
 > You can update the connection string in `src/main/resources/application.properties`:
 
 ```properties
-spring.data.mongodb.uri=mongodb://localhost:27017/userdb
+spring.data.mongodb.uri=mongodb://localhost:27017/spring
 ```
 
 ### 3. Build & Run
@@ -108,7 +108,8 @@ spring.data.mongodb.uri=mongodb://localhost:27017/userdb
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "age": 30
+  "age": 30,
+  "password":"johndoe123"
 }
 ```
 
