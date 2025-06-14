@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,27 +25,27 @@ public class UserControllers {
     private UserServices userServices;
 
     @GetMapping()
-    public List<UserEntity> getAllUsers() {
+    public ResponseEntity<List<UserEntity>> getAllUsers() {
         return userServices.getAllUser();
     }
 
     @PostMapping()
-    public UserEntity postMethodName(@RequestBody UserEntity user) {
+    public ResponseEntity<?> postMethodName(@RequestBody UserEntity user) {
         return userServices.saveUser(user);
     }
 
     @GetMapping("{id}")
-    public UserEntity getUserById(@PathVariable ObjectId id) {
-        return userServices.getUserById(id).orElse(null);
+    public ResponseEntity<UserEntity> getUserById(@PathVariable ObjectId id) {
+        return userServices.getUserById(id);
     }
 
     @PutMapping("{id}")
-    public UserEntity putMethodName(@PathVariable ObjectId id, @RequestBody UserEntity user) {
+    public ResponseEntity<UserEntity> putMethodName(@PathVariable ObjectId id, @RequestBody UserEntity user) {
         return userServices.updateUserById(id, user);
     }
 
     @DeleteMapping("{id}")
-    public Boolean deleteUserById(@PathVariable ObjectId id){
+    public ResponseEntity<?> deleteUserById(@PathVariable ObjectId id){
         return userServices.deleteUserById(id);
     }
 

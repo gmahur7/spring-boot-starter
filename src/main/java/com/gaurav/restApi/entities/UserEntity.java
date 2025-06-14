@@ -4,63 +4,24 @@ import java.time.LocalDate;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+// import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.mongodb.lang.NonNull;
+
+import lombok.Data;
+
 @Document(collection = "users")
+@Data
 public class UserEntity {
     @Id
     private ObjectId id;
     private String name;
+    // @Indexed(unique = true)
+    @NonNull
     private String email;
+    @NonNull
     private String password;
     private int age;
     private LocalDate date;
-
-    public ObjectId getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 }
