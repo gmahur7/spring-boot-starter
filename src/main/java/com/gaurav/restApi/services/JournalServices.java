@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gaurav.restApi.entities.JournalEntity;
 import com.gaurav.restApi.entities.UserEntity;
@@ -39,6 +40,7 @@ public class JournalServices {
     }
   }
 
+  @Transactional
   public ResponseEntity<?> createEntry(JournalEntity entry, ObjectId userId) {
     try {
       UserEntity user = userRepo.findById(userId).orElse(null);
@@ -49,6 +51,8 @@ public class JournalServices {
       if (alreadyEntry != null) {
         return new ResponseEntity<>("Entry already exist with title", HttpStatus.BAD_REQUEST);
       }
+      entry.setCreatedAt(LocalDateTime.now());
+      entry.setUpdatedAt(null);
       entry.setUser(user);
       JournalEntity savedEntry = this.journalRepo.save(entry);
       return new ResponseEntity<>(savedEntry, HttpStatus.CREATED);
@@ -58,6 +62,7 @@ public class JournalServices {
     }
   }
 
+  @Transactional
   public ResponseEntity<JournalEntity> updateById(ObjectId id, JournalEntity entity) {
     try {
       JournalEntity oldEntry = journalRepo.findById(id).orElse(null);
@@ -79,6 +84,7 @@ public class JournalServices {
     }
   }
 
+  @Transactional
   public ResponseEntity<?> deleteAllJournalsByUserId(ObjectId userId) {
     try {
       UserEntity user = userRepo.findById(userId).orElse(null);
@@ -98,6 +104,7 @@ public class JournalServices {
 
   }
 
+  @Transactional
   public Boolean deleteAllJournalsByUserId(UserEntity user) {
     try {
       List<JournalEntity> entries = journalRepo.findByUserId(user.getId());
