@@ -1,6 +1,6 @@
 package com.gaurav.restApi.services;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -17,13 +17,16 @@ public class UserServices {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private JournalServices journalServices;
+
     public ResponseEntity<?> saveUser(UserEntity user) {
         try {
             UserEntity isExistWithEmail = userRepository.findByEmail(user.getEmail());
             if(isExistWithEmail!=null){
                return new ResponseEntity<>("User already exist with given email",HttpStatus.BAD_REQUEST);            
             }
-            user.setDate(LocalDate.now());
+            user.setDate(LocalDateTime.now());
             userRepository.save(user);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         } catch (Exception error) {
@@ -74,6 +77,7 @@ public class UserServices {
             if (user.getAge() != 0 && user.getAge() != oldUser.getAge()) {
                 oldUser.setAge(user.getAge());
             }
+            user.setUpdatedAt(LocalDateTime.now());
             userRepository.save(oldUser);
             return new ResponseEntity<>(oldUser, HttpStatus.OK);
         } catch (Exception e) {
@@ -84,10 +88,20 @@ public class UserServices {
 
     public ResponseEntity<?> deleteUserById(ObjectId id) {
         try {
+            UserEntity user = userRepository.findById(id).orElse(null);
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            boolean response = journalServices.deleteAllJournalsByUserId(user);
+            if(!response) {
+                return new ResponseEntity<>("Error in deleting journals", HttpStatus.BAD_REQUEST);
+            }
+            
             userRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("User Deleted Successfully",HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            System.out.println("Error in deleting user: " + e);
+            return new ResponseEntity<>("Error in deleteing user",HttpStatus.BAD_REQUEST);
         }
     }
 }

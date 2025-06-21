@@ -1,6 +1,6 @@
 package com.gaurav.restApi.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -23,5 +23,6 @@ public class UserEntity {
     @NonNull
     private String password;
     private int age;
-    private LocalDate date;
+    private LocalDateTime date;
+    private LocalDateTime updatedAt;
 }
